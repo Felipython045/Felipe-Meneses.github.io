@@ -61,6 +61,7 @@
         for (var x = k + 1; x <= n; x++) {
             var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
             answer += answer_a;
+      document.getElementById("result").innerHTML = `Result: ${answer}`;
         }
     } else if (type === "P(x >= a)") {
         for (var x = k; x <= n; x++) {
@@ -76,18 +77,21 @@
         for (var x = 0; x <= k; x++) {
             var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
             answer += answer_a;
+      document.getElementById("result").innerHTML = `Result: ${answer}`;
         }
     } else if (type === "P(a < x < b)") {
         var b = parseInt(prompt("insertar limite superior de la distribucion:"));
         for (var x = k + 1; x < b; x++) {
             var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
             answer += answer_a;
+      document.getElementById("result").innerHTML = `Result: ${answer}`;
         }
     } else if (type === "P(a <= x <= b)") {
         var b = parseInt(prompt("insertar limite superior de la distribucion:"));
         for (var x = k; x <= b; x++) {
             var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
             answer += answer_a;
+      document.getElementById("result").innerHTML = `Result: ${answer}`;
         }
     }
 
