@@ -51,41 +51,49 @@
 
         if (type === "P(x = a)") {
             answer = math.comb(n, k) * (p ** k) * ((1 - p) ** (n - k));
-            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
         } else if (type === "P(x > a)") {
             for (let x = k + 1; x <= n; x++) {
                 const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                console.log(`P(x = ${x}): ${answer_a}`);
                 answer += answer_a;
             }
-            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
         } else if (type === "P(x => a)") {
             for (let x = k; x <= n; x++) {
                 const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                console.log(`P(x = ${x}): ${answer_a}`);
                 answer += answer_a;
             }
-            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
         } else if (type === "P(x < a)") {
             for (let x = 0; x < k; x++) {
                 const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                console.log(`P(x = ${x}): ${answer_a}`);
                 answer += answer_a;
             }
-            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
         } else if (type === "P(x => a)") {
             for (let x = 0; x <= k; x++) {
                 const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                console.log(`P(x = ${x}): ${answer_a}`);
                 answer += answer_a;
             }
-            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
         } else if (type === "P(a < x < b)" || type === "P(a =< x =< b)") {
             const b = parseInt(document.getElementById('limit').value);
             for (let x = k + 1; x <= b; x++) {
                 const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                console.log(`P(x = ${x}): ${answer_a}`);
                 answer += answer_a;
             }
-            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
         }
+
+        console.log(`Resultado final: ${answer.toFixed(4)}`);
+        document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
     }
 
     document.getElementById('type').addEventListener('change', function() {
         const limitContainer = document.getElementById('limitContainer');
-        if (this.value.includes('< x < b') || this.value.includes('=< x =
+        if (this.value.includes('< x < b') || this.value.includes('=< x =< b')) {
+            limitContainer.style.display = 'block';
+        } else {
+            limitContainer.style.display = 'none';
+        }
+    });
+</script>
