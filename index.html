@@ -49,31 +49,43 @@
 
         let answer = 0;
 
-        if (type === "P(a < x < b)" || type === "P(a =< x =< b)") {
+        if (type === "P(x = a)") {
+            answer = math.comb(n, k) * (p ** k) * ((1 - p) ** (n - k));
+            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
+        } else if (type === "P(x > a)") {
+            for (let x = k + 1; x <= n; x++) {
+                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                answer += answer_a;
+            }
+            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
+        } else if (type === "P(x => a)") {
+            for (let x = k; x <= n; x++) {
+                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                answer += answer_a;
+            }
+            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
+        } else if (type === "P(x < a)") {
+            for (let x = 0; x < k; x++) {
+                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                answer += answer_a;
+            }
+            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
+        } else if (type === "P(x => a)") {
+            for (let x = 0; x <= k; x++) {
+                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                answer += answer_a;
+            }
+            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
+        } else if (type === "P(a < x < b)" || type === "P(a =< x =< b)") {
             const b = parseInt(document.getElementById('limit').value);
             for (let x = k + 1; x <= b; x++) {
                 const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
                 answer += answer_a;
             }
-        } else {
-            for (let x = (type.includes('<=') ? k : k + 1); x <= n; x++) {
-                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
-                answer += answer_a;
-            }
+            document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
         }
-
-        document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
     }
 
     document.getElementById('type').addEventListener('change', function() {
         const limitContainer = document.getElementById('limitContainer');
-        if (this.value.includes('< x < b') || this.value.includes('=< x =< b')) {
-            limitContainer.style.display = 'block';
-        } else {
-            limitContainer.style.display = 'none';
-        }
-    });
-</script>
-
-</body>
-</html>
+        if (this.value.includes('< x < b') || this.value.includes('=< x =
