@@ -46,61 +46,55 @@
 
   <script>
     function calculate() {
-      // Retrieve user inputs
-      var n = parseInt(document.getElementById("inputN").value);
-      var k = parseInt(document.getElementById("inputK").value);
-      var p = parseFloat(document.getElementById("inputP").value);
-      var type = document.getElementById("inputType").value;
+    // Retrieve user inputs
+    var n = parseInt(document.getElementById("inputN").value);
+    var k = parseInt(document.getElementById("inputK").value);
+    var p = parseFloat(document.getElementById("inputP").value);
+    var type = document.getElementById("inputType").value;
 
-      // Perform calculations
-      var answer = 0;
+    // Perform calculations
+    var answer = 0;
 
-      if (type === "P(x = a)") {
+    if (type === "P(x = a)") {
         answer = math.comb(n, k) * Math.pow(p, k) * Math.pow((1 - p), (n - k));
-      } else if (type === "P(x > a)") {
+    } else if (type === "P(x > a)") {
         for (var x = k + 1; x <= n; x++) {
-          var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-          answer += answer_a;
-          document.getElementById("result").innerHTML = `Result: ${answer}`;
+            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
+            answer += answer_a;
         }
-      } else if (type === "P(x >= a)") {
+    } else if (type === "P(x >= a)") {
         for (var x = k; x <= n; x++) {
-          var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-          answer += answer_a;
-           document.getElementById("result").innerHTML = `Result: ${answer}`;
+            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
+            answer += answer_a;
         }
-      } else if (type === "P(x < a)") {
+    } else if (type === "P(x < a)") {
         for (var x = 0; x < k; x++) {
-          var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-          answer += answer_a;
-           document.getElementById("result").innerHTML = `Result: ${answer}`;
+            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
+            answer += answer_a;
         }
-      } else if (type === "P(x <= a)") {
+    } else if (type === "P(x <= a)") {
         for (var x = 0; x <= k; x++) {
-          var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-          answer += answer_a;
-           document.getElementById("result").innerHTML = `Result: ${answer}`;
+            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
+            answer += answer_a;
         }
-      } else if (type === "P(a < x < b)") {
+    } else if (type === "P(a < x < b)") {
         var b = parseInt(prompt("insertar limite superior de la distribucion:"));
         for (var x = k + 1; x < b; x++) {
-          var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-          answer += answer_a;
-           document.getElementById("result").innerHTML = `Result: ${answer}`;
+            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
+            answer += answer_a;
         }
-      } else if (type === "P(a <= x <= b)") {
+    } else if (type === "P(a <= x <= b)") {
         var b = parseInt(prompt("insertar limite superior de la distribucion:"));
         for (var x = k; x <= b; x++) {
-          var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-          answer += answer_a;
-           document.getElementById("result").innerHTML = `Result: ${answer}`;
+            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
+            answer += answer_a;
         }
-      }
-
-      // Display the result
-     document.getElementById("result").innerHTML = `Result: ${answer}`;
     }
-  </script>
+
+    // Display the result
+    document.getElementById("result").innerHTML = `Result: ${answer}`;
+}
+<script>
 
 </body>
 </html>
