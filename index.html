@@ -1,104 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Binomial Distribution Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    input {
-      margin-bottom: 10px;
-    }
-  </style>
-  <!-- Include Math.js library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.7.2/math.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Distribución Binomial</title>
 </head>
 <body>
 
-  <h1>Binomial Distribution Calculator</h1>
+<h1>Calculadora de Distribución Binomial</h1>
 
-  <form id="binomialForm">
-    <label for="inputN">Ingrese la cantidad de veces que se repite el evento:</label>
-    <input type="number" id="inputN" required>
+<form id="binomialForm">
+    <label for="n">Número de repeticiones (n):</label>
+    <input type="number" id="n" required>
 
-    <label for="inputK">Insertar el valor de éxitos:</label>
-    <input type="number" id="inputK" required>
+    <label for="k">Número de éxitos (k):</label>
+    <input type="number" id="k" required>
 
-    <label for="inputP">Insertar la probabilidad de éxito:</label>
-    <input type="number" step="0.01" id="inputP" required>
+    <label for="p">Probabilidad de éxito (p):</label>
+    <input type="number" id="p" step="0.01" required>
 
-    <label for="inputType">Insertar el tipo de distribucion binomial:</label>
-    <input type="text" id="inputType" placeholder="P(x = a)">
+    <label for="type">Tipo de distribución:</label>
+    <select id="type" required>
+        <option value="P(x = a)">P(x = a)</option>
+        <option value="P(x > a)">P(x > a)</option>
+        <option value="P(x => a)">P(x => a)</option>
+        <option value="P(x < a)">P(x < a)</option>
+        <option value="P(x => a)">P(x => a)</option>
+        <option value="P(a < x < b)">P(a < x < b)</option>
+        <option value="P(a =< x =< b)">P(a =< x =< b)</option>
+    </select>
 
-    <div id="additionalInputs"></div>
+    <div id="limitContainer" style="display:none;">
+        <label for="limit">Límite superior de la distribución (b):</label>
+        <input type="number" id="limit">
+    </div>
 
     <button type="button" onclick="calculate()">Calcular</button>
-  </form>
+</form>
 
-  <div id="result"></div>
+<p id="result"></p>
 
-  <script>
+<script>
     function calculate() {
-    // Retrieve user inputs
-    var n = parseInt(document.getElementById("inputN").value);
-    var k = parseInt(document.getElementById("inputK").value);
-    var p = parseFloat(document.getElementById("inputP").value);
-    var type = document.getElementById("inputType").value;
+        const n = parseInt(document.getElementById('n').value);
+        const k = parseInt(document.getElementById('k').value);
+        const p = parseFloat(document.getElementById('p').value);
+        const type = document.getElementById('type').value;
 
-    // Perform calculations
-    var answer = 0;
+        let answer = 0;
 
-    if (type === "P(x = a)") {
-        answer = math.comb(n, k) * Math.pow(p, k) * Math.pow((1 - p), (n - k));
-    } else if (type === "P(x > a)") {
-        for (var x = k + 1; x <= n; x++) {
-            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-            answer += answer_a;
-              document.getElementById("result").innerHTML = `Result: ${answer}`;
+        if (type === "P(x = a)") {
+            answer = math.comb(n, k) * (p ** k) * ((1 - p) ** (n - k));
+        } else if (type === "P(x > a)") {
+            for (let x = k + 1; x <= n; x++) {
+                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                console.log(`P(x = ${x}): ${answer_a}`);
+                answer += answer_a;
+            }
+        } else if (type === "P(x => a)") {
+            for (let x = k; x <= n; x++) {
+                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                console.log(`P(x = ${x}): ${answer_a}`);
+                answer += answer_a;
+            }
+        } else if (type === "P(x < a)") {
+            for (let x = 0; x < k; x++) {
+                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                console.log(`P(x = ${x}): ${answer_a}`);
+                answer += answer_a;
+            }
+        } else if (type === "P(x => a)") {
+            for (let x = 0; x <= k; x++) {
+                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                console.log(`P(x = ${x}): ${answer_a}`);
+                answer += answer_a;
+            }
+        } else if (type === "P(a < x < b)" || type === "P(a =< x =< b)") {
+            const b = parseInt(document.getElementById('limit').value);
+            for (let x = k + 1; x <= b; x++) {
+                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
+                console.log(`P(x = ${x}): ${answer_a}`);
+                answer += answer_a;
+            }
         }
-    } else if (type === "P(x >= a)") {
-        for (var x = k; x <= n; x++) {
-            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-            answer += answer_a;
-        }
-    } else if (type === "P(x < a)") {
-        for (var x = 0; x < k; x++) {
-            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-            answer += answer_a;
-        }
-    } else if (type === "P(x <= a)") {
-        for (var x = 0; x <= k; x++) {
-            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-            answer += answer_a;
-      document.getElementById("result").innerHTML = `Result: ${answer}`;
-        }
-    } else if (type === "P(a < x < b)") {
-        var b = parseInt(prompt("insertar limite superior de la distribucion:"));
-        for (var x = k + 1; x < b; x++) {
-            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-            answer += answer_a;
-      document.getElementById("result").innerHTML = `Result: ${answer}`;
-        }
-    } else if (type === "P(a <= x <= b)") {
-        var b = parseInt(prompt("insertar limite superior de la distribucion:"));
-        for (var x = k; x <= b; x++) {
-            var answer_a = math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
-            answer += answer_a;
-              document.getElementById("result").innerHTML = `Result: ${answer}`;
-        }
+
+        console.log(`Resultado final: ${answer.toFixed(4)}`);
+        document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
     }
 
-    // Display the result
-    document.getElementById("result").innerHTML = `Result: ${answer}`;
-}
-<script>
+    document.getElementById('type').addEventListener('change', function() {
+        const limitContainer = document.getElementById('limitContainer');
+        if (this.value.includes('< x < b') || this.value.includes('=< x =< b')) {
+            limitContainer.style.display = 'block';
+        } else {
+            limitContainer.style.display = 'none';
+        }
+    });
+</script>
 
 </body>
 </html>
