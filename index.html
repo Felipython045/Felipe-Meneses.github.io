@@ -3,102 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Distribución Binomial</title>
+    <title>Binomial Distribution Calculator</title>
 </head>
 <body>
 
-<h1>Calculadora de Distribución Binomial</h1>
-
-<form id="binomialForm">
-    <label for="n">Número de repeticiones (n):</label>
-    <input type="number" id="n" required>
-
-    <label for="k">Número de éxitos (k):</label>
-    <input type="number" id="k" required>
-
-    <label for="p">Probabilidad de éxito (p):</label>
-    <input type="number" id="p" step="0.01" required>
-
-    <label for="type">Tipo de distribución:</label>
-    <select id="type" required>
-        <option value="P(x = a)">P(x = a)</option>
-        <option value="P(x > a)">P(x > a)</option>
-        <option value="P(x => a)">P(x => a)</option>
-        <option value="P(x < a)">P(x < a)</option>
-        <option value="P(x => a)">P(x => a)</option>
-        <option value="P(a < x < b)">P(a < x < b)</option>
-        <option value="P(a =< x =< b)">P(a =< x =< b)</option>
-    </select>
-
-    <div id="limitContainer" style="display:none;">
-        <label for="limit">Límite superior de la distribución (b):</label>
-        <input type="number" id="limit">
-    </div>
-
-    <button type="button" onclick="calculate()">Calcular</button>
-</form>
-
-<p id="result"></p>
-
 <script>
-    function calculate() {
-        const n = parseInt(document.getElementById('n').value);
-        const k = parseInt(document.getElementById('k').value);
-        const p = parseFloat(document.getElementById('p').value);
-        const type = document.getElementById('type').value;
+    function calculateProbability() {
+        const math = require('mathjs');
+
+        const n = parseInt(prompt("Ingrese la cantidad de veces que se repite el evento: "));
+        const k = parseInt(prompt("Insertar el valor de éxitos: "));
+        const p = parseFloat(prompt("Insertar la probabilidad de éxito: "));
+        const type = prompt("insertar el tipo de distribucion binomial siguiendo este formato P(x ... a) donde ... es la condicion:");
 
         let answer = 0;
 
         if (type === "P(x = a)") {
-            answer = math.comb(n, k) * (p ** k) * ((1 - p) ** (n - k));
+            answer = math.comb(n, k) * Math.pow(p, k) * Math.pow((1 - p), (n - k));
+            alert(`P(x = ${k}) = ${answer}`);
         } else if (type === "P(x > a)") {
             for (let x = k + 1; x <= n; x++) {
-                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
-                console.log(`P(x = ${x}): ${answer_a}`);
-                answer += answer_a;
+                answer += math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
             }
-        } else if (type === "P(x => a)") {
+            alert(`P(x > ${k}) = ${answer}`);
+        } else if (type === "P(x >= a)") {
             for (let x = k; x <= n; x++) {
-                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
-                console.log(`P(x = ${x}): ${answer_a}`);
-                answer += answer_a;
+                answer += math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
             }
+            alert(`P(x >= ${k}) = ${answer}`);
         } else if (type === "P(x < a)") {
             for (let x = 0; x < k; x++) {
-                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
-                console.log(`P(x = ${x}): ${answer_a}`);
-                answer += answer_a;
+                answer += math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
             }
-        } else if (type === "P(x => a)") {
+            alert(`P(x < ${k}) = ${answer}`);
+        } else if (type === "P(x <= a)") {
             for (let x = 0; x <= k; x++) {
-                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
-                console.log(`P(x = ${x}): ${answer_a}`);
-                answer += answer_a;
+                answer += math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
             }
-        } else if (type === "P(a < x < b)" || type === "P(a =< x =< b)") {
-            const b = parseInt(document.getElementById('limit').value);
-            for (let x = k + 1; x <= b; x++) {
-                const answer_a = math.comb(n, x) * (p ** x) * ((1 - p) ** (n - x));
-                console.log(`P(x = ${x}): ${answer_a}`);
-                answer += answer_a;
+            alert(`P(x <= ${k}) = ${answer}`);
+        } else if (type === "P(a < x < b)") {
+            const b = parseInt(prompt("insertar limite superior de la distribucion:"));
+            for (let x = k + 1; x < b; x++) {
+                answer += math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
             }
+            alert(`P(${k} < x < ${b}) = ${answer}`);
+        } else if (type === "P(a <= x <= b)") {
+            const b = parseInt(prompt("insertar limite superior de la distribucion:"));
+            for (let x = k; x <= b; x++) {
+                answer += math.comb(n, x) * Math.pow(p, x) * Math.pow((1 - p), (n - x));
+            }
+            alert(`P(${k} <= x <= ${b}) = ${answer}`);
+        } else {
+            alert("Tipo de distribucion no reconocido.");
         }
-
-        console.log(`Resultado final: ${answer.toFixed(4)}`);
-        document.getElementById('result').innerText = `Resultado: ${answer.toFixed(4)}`;
-        return result;
     }
 
-    document.getElementById('type').addEventListener('change', function() {
-        const limitContainer = document.getElementById('limitContainer');
-        if (this.value.includes('< x < b') || this.value.includes('=< x =< b')) {
-            limitContainer.style.display = 'block';
-        } else {
-            limitContainer.style.display = 'none';
-        }
-    });
+    calculateProbability();
 </script>
 
 </body>
 </html>
-
